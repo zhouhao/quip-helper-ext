@@ -3,7 +3,7 @@ import Mark from 'mark.js';
 const options = note => {
   return {
     acrossElements: true,
-    exclude: ['.saltynote *'],
+    exclude: ['.noteforce *'],
     separateWordSearch: false,
     each: node => {
       node.setAttribute('title', note.note);

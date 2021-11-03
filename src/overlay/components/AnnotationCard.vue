@@ -1,13 +1,13 @@
 <template>
   <div ref="noteCard" id="crx-comment-card" :style="{ top: top + 'px', left: left + 'px' }" v-show="showAnnotationCard" class="card">
     <div class="text-white card-header bg-primary" @mousedown="dragNoteCard">
-      &nbsp;SaltyNote
+      &nbsp;Noteforce
       <button type="button" class="close" aria-label="Close" @click="closeCard">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="card-body">
-      <form id="saltynote-form">
+      <form id="noteforce-form">
         <div class="form-group">
           <SelectedTextBlockquote :text="selectText" :class="highlightClass" />
           <ColorSelect :color="highlightColor" @update:color="changeHighlightColor"></ColorSelect>
@@ -159,7 +159,7 @@ $zIndex: 99999;
   position: absolute;
   z-index: $zIndex;
 
-  #saltynote-form {
+  #noteforce-form {
     display: block !important;
   }
   .card-header {

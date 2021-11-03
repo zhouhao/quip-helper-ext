@@ -1,5 +1,5 @@
 {
-  "name": "SaltyNote",
+  "name": "Noteforce",
   "description": "An extension that helps you make annotations for any web page",
   "version": "0.1.0",
   "manifest_version": 2,
@@ -9,7 +9,7 @@
     "144": "icons/icon.png"
   },
   "browser_action": {
-    "default_title": "SaltyNote"
+    "default_title": "Noteforce"
   },
   "background": {
     "scripts": ["background.js"],

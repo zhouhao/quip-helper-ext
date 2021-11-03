@@ -32,19 +32,19 @@ const getNotes = (tab, actionType, iconClick = false) => {
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    title: 'Annotate in SaltyNote',
-    id: types.SALTYNOTE_RIGHT_CLICK_MENU_ID,
+    title: 'Annotate in Noteforce',
+    id: types.NOTEFORCE_RIGHT_CLICK_MENU_ID,
     contexts: ['selection'],
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === types.SALTYNOTE_RIGHT_CLICK_MENU_ID) {
+  if (info.menuItemId === types.NOTEFORCE_RIGHT_CLICK_MENU_ID) {
     console.log('right click triggered');
     httpUtils
       .isLoggedIn()
       .then(res => {
-        console.log('SALTYNOTE_RIGHT_CLICK_MENU_ID', JSON.stringify(res));
+        console.log('NOTEFORCE_RIGHT_CLICK_MENU_ID', JSON.stringify(res));
         chrome.tabs.sendMessage(tab.id, { action: types.RIGHT_CLICK }, response => {
           console.log(response);
         });

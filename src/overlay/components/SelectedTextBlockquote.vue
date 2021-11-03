@@ -1,5 +1,5 @@
 <template>
-  <blockquote class="blockquote saltynote-blockquote">{{ text }}</blockquote>
+  <blockquote class="blockquote noteforce-blockquote">{{ text }}</blockquote>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
 
 <style lang="scss">
 $yellow: #f8bb04;
-.saltynote blockquote.saltynote-blockquote.blockquote {
+.noteforce blockquote.noteforce-blockquote.blockquote {
   position: relative;
   padding-left: 1em;
   border: none;
@@ -30,35 +30,35 @@ $yellow: #f8bb04;
   &:after {
     content: '\201D';
   }
-  &.saltynote-007bff {
+  &.noteforce-007bff {
     border-left: 0.2em solid #007bff;
     &:before,
     &:after {
       color: #007bff;
     }
   }
-  &.saltynote-28a745 {
+  &.noteforce-28a745 {
     border-left: 0.2em solid #28a745;
     &:before,
     &:after {
       color: #28a745;
     }
   }
-  &.saltynote-ff4500 {
+  &.noteforce-ff4500 {
     border-left: 0.2em solid #ff4500;
     &:before,
     &:after {
       color: #ff4500;
     }
   }
-  &.saltynote-fc88ab {
+  &.noteforce-fc88ab {
     border-left: 0.2em solid #fc88ab;
     &:before,
     &:after {
       color: #fc88ab;
     }
   }
-  &.saltynote-8a54ce {
+  &.noteforce-8a54ce {
     border-left: 0.2em solid #8a54ce;
     &:before,
     &:after {

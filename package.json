@@ -1,8 +1,8 @@
 {
-  "name": "saltynote",
-  "version": "0.2.7",
+  "name": "noteforce",
+  "version": "0.1.0",
   "description": "An extension that helps you make annotations for any web page",
-  "author": "SaltyNote <dev@saltynote.com>",
+  "author": "noteforce <dev@saltynote.com>",
   "engines": {
     "node": ">=10"
   },

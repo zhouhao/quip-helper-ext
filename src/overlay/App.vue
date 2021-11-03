@@ -1,5 +1,5 @@
 <template>
-  <div class="saltynote">
+  <div class="noteforce">
     <!-- Annotation Popup Component-->
     <AnnotationCard />
     <!-- highlight popup-->
@@ -94,7 +94,7 @@ export default {
 
 <style lang="scss">
 $zIndex: 9999;
-.saltynote {
+.noteforce {
   position: absolute;
   top: 0;
   left: 0;

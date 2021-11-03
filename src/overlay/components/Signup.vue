@@ -63,7 +63,7 @@ export default {
     },
     sendCode() {
       if (!BaseUtils.isEmail(this.user.email)) {
-        toastr.error('Email is not valid', 'SaltyNote');
+        toastr.error('Email is not valid', 'Noteforce');
       }
 
       toastr.info('Processing, please wait...');
@@ -79,19 +79,19 @@ export default {
     },
     signup() {
       if (!BaseUtils.isUsernameValid(this.user.username)) {
-        toastr.error('Username should be at least 6 characters with alphanumeric and "-", "_"', 'SaltyNote');
+        toastr.error('Username should be at least 6 characters with alphanumeric and "-", "_"', 'Noteforce');
         return;
       }
       if (!BaseUtils.isEmail(this.user.email)) {
-        toastr.error('Email is not valid', 'SaltyNote');
+        toastr.error('Email is not valid', 'Noteforce');
         return;
       }
       if (!this.user.token) {
-        toastr.error('Email verification code is required', 'SaltyNote');
+        toastr.error('Email verification code is required', 'Noteforce');
         return;
       }
       if (!BaseUtils.isPasswordValid(this.user.password) || this.user.password !== this.user.passwordCfm) {
-        toastr.error('Password is not valid, it should be at least 6 characters, and be confirmed', 'SaltyNote');
+        toastr.error('Password is not valid, it should be at least 6 characters, and be confirmed', 'Noteforce');
         return;
       }
       chrome.runtime.sendMessage({ action: types.SIGNUP, user: this.user }, response => {

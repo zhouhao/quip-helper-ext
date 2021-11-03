@@ -2,7 +2,7 @@
   <div class="container">
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="/icons/icon.png" alt="" />
-      <h2>SaltyNote Dashboard</h2>
+      <h2>Noteforce Dashboard</h2>
     </div>
 
     <div class="row">
