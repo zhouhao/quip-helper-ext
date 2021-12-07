@@ -39,6 +39,15 @@ export default {
         tray.classList.remove('visible');
       }
     });
+
+    $(document).on('click', '.noteforce-editor-btn', function(event) {
+      event.preventDefault();
+      const origin = $(this).data('origin');
+      if (origin) {
+        document.querySelector(`[aria-label="${origin}"]`).click();
+      }
+      document.getElementById('editorTray').classList.remove('visible');
+    });
   },
 
   methods: {
@@ -52,15 +61,6 @@ export default {
         clonedItem.setAttribute('data-origin', it);
         clonedItem.classList.add('noteforce-editor-btn');
         container.append(clonedItem);
-      });
-      $(document).on('click', '.noteforce-editor-btn', function(event) {
-        event.preventDefault();
-        const origin = $(this).data('origin');
-        console.log('origin = ', origin);
-        if (origin) {
-          document.querySelector(`[aria-label="${origin}"]`).click();
-        }
-        document.getElementById('editorTray').classList.remove('visible');
       });
     },
   },
