@@ -15,7 +15,7 @@
     </template>
     <!-- Side Bar Component-->
     <SideBar @hide:sidebar="closeSideBar" />
-    <InlineEditorMenu />
+    <InlineEditorMenu v-if="showInlineEditor" />
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
   components: { InlineEditorMenu, SideBar, AnnotationCard },
   data() {
     return {
+      showInlineEditor: false,
       showSideBar: false,
       notes: [],
       showCustomNoteWindow: false,
@@ -42,6 +43,9 @@ export default {
         popover: {},
       },
     };
+  },
+  created() {
+    this.showInlineEditor = window.location.hostname.endsWith('quip.com');
   },
   mounted() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
