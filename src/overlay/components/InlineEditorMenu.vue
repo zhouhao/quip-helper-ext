@@ -7,7 +7,7 @@
 <script>
 import $ from 'jquery';
 
-const itemList = ['Bold', 'Italic', 'Underline', 'Strikethrough', 'Text Color', 'Highlight', 'Code', 'Link', 'Comment'];
+const itemList = ['Bold', 'Italic', 'Underline', 'Strikethrough', 'Text Color', 'Highlight', 'Code', 'Link'];
 export default {
   name: 'InlineEditorMenu',
   data() {
