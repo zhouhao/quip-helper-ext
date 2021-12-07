@@ -16,8 +16,7 @@ export default {
     };
   },
   mounted() {
-    console.log('Hello world');
-    document.onmouseup = () => {
+    document.querySelector('article').addEventListener('mouseup', () => {
       const tray = document.getElementById('editorTray');
 
       if (window.getSelection().toString()) {
@@ -39,31 +38,29 @@ export default {
         }, 100);
         tray.classList.remove('visible');
       }
-    };
+    });
   },
 
   methods: {
     buildMenu() {
-      console.log('buildMenu');
       const container = $('#inline-editor-menu-container');
       container.empty();
       itemList.forEach(it => {
         const item = document.querySelector(`[aria-label="${it}"]`);
-        // console.log(it + ', disabled = ' + item.disabled);
         const clonedItem = item.cloneNode(true);
         clonedItem.removeAttribute('aria-label');
         clonedItem.setAttribute('data-origin', it);
         clonedItem.classList.add('noteforce-editor-btn');
         container.append(clonedItem);
       });
-      $(document).on('click', '.noteforce-editor-btn', event => {
-        console.log('click event');
+      $(document).on('click', '.noteforce-editor-btn', function(event) {
         event.preventDefault();
         const origin = $(this).data('origin');
         console.log('origin = ', origin);
         if (origin) {
           document.querySelector(`[aria-label="${origin}"]`).click();
         }
+        document.getElementById('editorTray').classList.remove('visible');
       });
     },
   },
