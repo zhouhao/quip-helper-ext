@@ -4,6 +4,7 @@ import { login, signup, emailVerify } from './utils/httpUtils';
 import { getSanitizedUrl } from './utils/urls';
 import { removeScriptTags } from './utils/base';
 import { defaultColor } from './utils/color';
+import { CMD_QUIP_ZEN_MODE } from './utils/action-types';
 
 global.browser = require('webextension-polyfill');
 
@@ -23,7 +24,7 @@ const getNotes = (tab, actionType, iconClick = false) => {
       });
     })
     .catch(() => {
-      // Login is required here when action is show side bar.
+      // Login is required here when action is show sidebar.
       if (actionType === types.SHOW_SIDE_BAR) {
         askLogin(tab, iconClick);
       }
@@ -171,7 +172,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 chrome.commands.onCommand.addListener(command => {
   if (command === types.CMD_HIGHLIGHT_TOGGLE) {
-    console.log(types.CMD_HIGHLIGHT_TOGGLE);
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       chrome.tabs.sendMessage(tabs[0].id, { action: types.CMD_HIGHLIGHT_TOGGLE }, response => {
         console.log(response);
@@ -179,5 +179,11 @@ chrome.commands.onCommand.addListener(command => {
     });
   } else if (command === types.CMD_OPEN_OPTIONS_PAGE) {
     chrome.runtime.openOptionsPage(() => console.log('Options page is opened'));
+  } else if (command === types.CMD_QUIP_ZEN_MODE) {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: types.CMD_QUIP_ZEN_MODE }, response => {
+        console.log(response);
+      });
+    });
   }
 });

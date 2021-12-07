@@ -15,7 +15,7 @@
     </template>
     <!-- Side Bar Component-->
     <SideBar @hide:sidebar="closeSideBar" />
-    <InlineEditorMenu v-if="showInlineEditor" />
+    <InlineEditorMenu v-if="quip.showInlineEditor" />
   </div>
 </template>
 
@@ -26,13 +26,18 @@ import { mdRender } from '../utils/md';
 import AnnotationCard from './components/AnnotationCard';
 import SideBar from './components/SideBar';
 import InlineEditorMenu from './components/InlineEditorMenu';
+import $ from 'jquery';
 
 export default {
   name: 'App',
   components: { InlineEditorMenu, SideBar, AnnotationCard },
   data() {
     return {
-      showInlineEditor: false,
+      quip: {
+        showInlineEditor: false,
+        zenMode: false,
+        docMaxWidth: '',
+      },
       showSideBar: false,
       notes: [],
       showCustomNoteWindow: false,
@@ -45,7 +50,8 @@ export default {
     };
   },
   created() {
-    this.showInlineEditor = window.location.hostname.endsWith('quip.com');
+    this.quip.showInlineEditor = window.location.hostname.endsWith('quip.com') && !!document.querySelector('article');
+    this.quip.docMaxWidth = $('.parts-screen-children-wrapper').css('max-width');
   },
   mounted() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -69,11 +75,34 @@ export default {
         }
         this.highlight.cmdToggle = !this.highlight.cmdToggle;
       }
+      if (request.action === types.CMD_QUIP_ZEN_MODE) {
+        if (!this.quip.showInlineEditor) {
+          return;
+        }
+        this.toggleZenMode(this.quip.zenMode);
+      }
       sendResponse({ done: true });
       return true;
     });
   },
   methods: {
+    toggleZenMode(zenModeStatus) {
+      this.quip.zenMode = !zenModeStatus;
+      const sidebar = $('div.navigation-controller-sidebar');
+      const navbar = $('div.navigation-controller-header.has-toolbar');
+      const quipDoc = $('div.editor.document');
+      if (this.quip.zenMode) {
+        sidebar.addClass('noteforce-zen-mode');
+        navbar.addClass('noteforce-zen-mode');
+        quipDoc.addClass('noteforce-fullscreen');
+        $('.parts-screen-children-wrapper').css('max-width', '');
+      } else {
+        sidebar.removeClass('noteforce-zen-mode');
+        navbar.removeClass('noteforce-zen-mode');
+        quipDoc.removeClass('noteforce-fullscreen');
+        $('.parts-screen-children-wrapper').css('max-width', this.quip.docMaxWidth);
+      }
+    },
     changeHighlightColor(color) {
       this.highlight.color = color;
       console.log('highlight.color = ', this.highlight.color);
@@ -122,5 +151,17 @@ $zIndex: 9999;
       padding: 0 10px;
     }
   }
+}
+
+.noteforce-zen-mode {
+  display: none;
+}
+.noteforce-fullscreen {
+  position: fixed !important;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999;
 }
 </style>

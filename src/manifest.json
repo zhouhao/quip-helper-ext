@@ -32,6 +32,13 @@
       },
       "description": "Toggle highlight for current page"
     },
+    "QUIP_ZEN_MODE": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z",
+        "mac": "Command+Shift+Z"
+      },
+      "description": "Enter Quip.com Zen Mode"
+    },
     "OPEN_OPTIONS_PAGE": {
       "suggested_key": {
         "default": "Ctrl+Shift+O",

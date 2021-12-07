@@ -8,6 +8,7 @@ export const SHOW_LOGIN = 'SHOW_LOGIN';
 export const HIGHLIGHT_ALL = 'HIGHLIGHT_ALL';
 export const CMD_HIGHLIGHT_TOGGLE = 'HIGHLIGHT_TOGGLE';
 export const CMD_OPEN_OPTIONS_PAGE = 'OPEN_OPTIONS_PAGE';
+export const CMD_QUIP_ZEN_MODE = 'QUIP_ZEN_MODE';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
