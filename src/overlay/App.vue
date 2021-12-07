@@ -15,6 +15,7 @@
     </template>
     <!-- Side Bar Component-->
     <SideBar @hide:sidebar="closeSideBar" />
+    <InlineEditorMenu />
   </div>
 </template>
 
@@ -24,10 +25,11 @@ import { highlightAll, unmark } from '../utils/highlight-mark';
 import { mdRender } from '../utils/md';
 import AnnotationCard from './components/AnnotationCard';
 import SideBar from './components/SideBar';
+import InlineEditorMenu from './components/InlineEditorMenu';
 
 export default {
   name: 'App',
-  components: { SideBar, AnnotationCard },
+  components: { InlineEditorMenu, SideBar, AnnotationCard },
   data() {
     return {
       showSideBar: false,
