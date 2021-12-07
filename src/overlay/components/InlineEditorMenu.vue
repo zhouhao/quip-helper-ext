@@ -7,7 +7,7 @@
 <script>
 import $ from 'jquery';
 
-const itemList = ['Bold', 'Italic', 'Underline', 'Strikethrough', 'Text Color', 'Highlight', 'Code', 'Link'];
+const itemList = ['Bold', 'Italic', 'Underline', 'Strikethrough', 'Text Color', 'Highlight', 'Code', 'Link', 'Comment'];
 export default {
   name: 'InlineEditorMenu',
   data() {
@@ -56,6 +56,9 @@ export default {
       container.empty();
       itemList.forEach(it => {
         const item = document.querySelector(`[aria-label="${it}"]`);
+        if (!item) {
+          return;
+        }
         const clonedItem = item.cloneNode(true);
         clonedItem.removeAttribute('aria-label');
         clonedItem.setAttribute('data-origin', it);
