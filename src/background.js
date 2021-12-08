@@ -4,7 +4,6 @@ import { login, signup, emailVerify } from './utils/httpUtils';
 import { getSanitizedUrl } from './utils/urls';
 import { removeScriptTags } from './utils/base';
 import { defaultColor } from './utils/color';
-import { CMD_QUIP_ZEN_MODE } from './utils/action-types';
 
 global.browser = require('webextension-polyfill');
 
