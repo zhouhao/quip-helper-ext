@@ -13,3 +13,5 @@ export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
 export const VERIFY_EMAIL = 'VERIFY_EMAIL';
+
+export const EVENT_ANNOTATE_ICON_CLICKED = 'ANNOTATE_ICON_CLICKED';
