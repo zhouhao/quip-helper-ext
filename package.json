@@ -1,8 +1,8 @@
 {
   "name": "noteforce",
-  "version": "0.1.1",
-  "description": "An extension that helps you make annotations for any web page",
-  "author": "noteforce <dev@saltynote.com>",
+  "version": "0.2.0",
+  "description": "An extension that makes your life easier in Salesforce",
+  "author": "noteforce <hzhou@quip.com>",
   "engines": {
     "node": ">=10"
   },
