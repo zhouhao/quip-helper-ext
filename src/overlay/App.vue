@@ -154,7 +154,9 @@ $zIndex: 9999;
 }
 
 .noteforce-zen-mode {
-  display: none;
+  position: fixed !important;
+  left: -1000px !important;
+  top: -1000px !important;
 }
 .noteforce-fullscreen {
   position: fixed !important;
