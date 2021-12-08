@@ -8,6 +8,7 @@
 import $ from 'jquery';
 
 const itemList = ['Bold', 'Italic', 'Underline', 'Strikethrough', 'Text Color', 'Highlight', 'Code', 'Link', 'Comment'];
+const colorPickerItems = ['Text Color', 'Highlight'];
 export default {
   name: 'InlineEditorMenu',
   data() {
@@ -45,6 +46,22 @@ export default {
       const origin = $(this).data('origin');
       if (origin) {
         document.querySelector(`[aria-label="${origin}"]`).click();
+        if (colorPickerItems.includes(origin)) {
+          const colorPickerContainer = $('.color-picker').closest('.popover');
+          // console.error(colorPickerContainer.attr('class'));
+          const mouseLocation = window
+            .getSelection()
+            .getRangeAt(0)
+            .getBoundingClientRect();
+          const top = mouseLocation.top - 32;
+          const left = mouseLocation.left + 64;
+          // console.error('left = ' + left + ', top = ' + top);
+          colorPickerContainer
+            .removeAttr('style')
+            .css('position', 'fixed')
+            .css('left', left + 'px')
+            .css('top', top + 'px');
+        }
       }
       document.getElementById('editorTray').classList.remove('visible');
     });
