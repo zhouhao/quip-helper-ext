@@ -1,6 +1,6 @@
 import * as types from './utils/action-types';
 import * as httpUtils from './utils/httpUtils';
-import { login, signup, emailVerify } from './utils/httpUtils';
+import { login, signup, emailVerify, fetchAllMyNotes } from './utils/httpUtils';
 import { getSanitizedUrl } from './utils/urls';
 import { removeScriptTags } from './utils/base';
 import { defaultColor } from './utils/color';
@@ -160,6 +160,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log('sign up succeed');
         getNotes(sender.tab, types.SHOW_SIDE_BAR);
         sendResponse({ done: true });
+      })
+      .catch(e => {
+        console.error(e);
+        sendResponse({ done: false, message: e });
+      });
+  }
+
+  if (request.action === types.SEARCH) {
+    fetchAllMyNotes(request.keyword)
+      .then(notes => {
+        sendResponse(notes);
       })
       .catch(e => {
         console.error(e);

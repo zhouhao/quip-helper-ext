@@ -54,5 +54,5 @@
       "description": "Open Options Page"
     }
   },
-  "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png"]
+  "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png", "icons/dog.png"]
 }
