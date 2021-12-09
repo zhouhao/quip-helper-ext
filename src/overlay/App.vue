@@ -97,16 +97,18 @@ export default {
       const sidebar = $('div.navigation-controller-sidebar');
       const navbar = $('div.navigation-controller-header.has-toolbar');
       const quipDoc = $('div.editor.document');
+      const docContainer = $('.parts-screen-children-wrapper');
       if (this.quip.zenMode) {
         sidebar.addClass('noteforce-zen-mode');
         navbar.addClass('noteforce-zen-mode');
         quipDoc.addClass('noteforce-fullscreen');
-        $('.parts-screen-children-wrapper').css('max-width', '');
+        this.quip.docMaxWidth = docContainer.css('max-width');
+        docContainer.css('max-width', '');
       } else {
         sidebar.removeClass('noteforce-zen-mode');
         navbar.removeClass('noteforce-zen-mode');
         quipDoc.removeClass('noteforce-fullscreen');
-        $('.parts-screen-children-wrapper').css('max-width', this.quip.docMaxWidth);
+        docContainer.css('max-width', this.quip.docMaxWidth);
       }
     },
     changeHighlightColor(color) {
