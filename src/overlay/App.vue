@@ -16,6 +16,7 @@
     <!-- Side Bar Component-->
     <SideBar @hide:sidebar="closeSideBar" />
     <InlineEditorMenu v-if="quip.showInlineEditor" />
+    <Search v-if="showSearch" />
   </div>
 </template>
 
@@ -27,10 +28,11 @@ import AnnotationCard from './components/AnnotationCard';
 import SideBar from './components/SideBar';
 import InlineEditorMenu from './components/InlineEditorMenu';
 import $ from 'jquery';
+import Search from './components/Search';
 
 export default {
   name: 'App',
-  components: { InlineEditorMenu, SideBar, AnnotationCard },
+  components: { Search, InlineEditorMenu, SideBar, AnnotationCard },
   data() {
     return {
       quip: {
@@ -41,6 +43,7 @@ export default {
       showSideBar: false,
       notes: [],
       showCustomNoteWindow: false,
+      showSearch: false,
       errorMsg: '',
       highlight: {
         doneForPageLoad: false,
@@ -80,6 +83,9 @@ export default {
           return;
         }
         this.toggleZenMode(this.quip.zenMode);
+      }
+      if (request.action === types.CMD_GLOBAL_SEARCH) {
+        this.showSearch = !this.showSearch;
       }
       sendResponse({ done: true });
       return true;

@@ -39,6 +39,13 @@
       },
       "description": "Enter Quip.com Zen Mode"
     },
+    "GLOBAL_SEARCH": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Global Search"
+    },
     "OPEN_OPTIONS_PAGE": {
       "suggested_key": {
         "default": "Ctrl+Shift+O",

@@ -184,5 +184,17 @@ chrome.commands.onCommand.addListener(command => {
         console.log(response);
       });
     });
+
+    // chrome.tabs.query({ currentWindow: true }, tabs => {
+    //   tabs.forEach(tab => {
+    //     console.log('tab = ' + tab.url + ' > ' + tab.title);
+    //   });
+    // });
+  } else if (command === types.CMD_GLOBAL_SEARCH) {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: types.CMD_GLOBAL_SEARCH }, response => {
+        console.log(response);
+      });
+    });
   }
 });
