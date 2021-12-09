@@ -36,10 +36,8 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { searchPageAnnotations } from '../../utils/page-annotation';
 import toastr from 'toastr';
-import 'toastr/build/toastr.min.css';
 import { getUrlHost } from '../../utils/urls';
 import { mdRender } from '../../utils/md';
 
