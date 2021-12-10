@@ -8,6 +8,7 @@
       <div>
         <button type="button" class="btn btn-link clean-all" @click="cleanAll">Clean All</button> |
         <button type="button" class="btn btn-link open-all" @click="openAll">Open All</button> |
+        <input type="file" id="noteforce-invisible-file-input" style="display: none" />
         <button type="button" class="btn btn-link open-all" @click="importJson">Import</button> |
         <button type="button" class="btn btn-link open-all" @click="exportJson">Export</button>
       </div>
@@ -46,6 +47,7 @@ import { getUrlHost } from '../utils/urls';
 import { formatDate } from '../utils/base';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { saveAs } from 'file-saver';
+import { nanoid } from 'nanoid';
 
 export default {
   name: 'OneTab',
@@ -58,6 +60,34 @@ export default {
   },
   mounted() {
     this.loadTabs();
+    document.getElementById('noteforce-invisible-file-input').addEventListener('change', event => {
+      const input = event.target;
+      if ('files' in input && input.files.length > 0) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onload = event => resolve(event.target.result);
+          reader.onerror = error => reject(error);
+          reader.readAsText(file);
+        })
+          .then(content => {
+            const loadedTabs = JSON.parse(content);
+            loadedTabs.forEach(tab => (tab.id = nanoid()));
+            chrome.storage.local.get(['tabs'], preTabs => {
+              let result = [];
+              if (preTabs && preTabs.tabs && preTabs.tabs.length > 0) {
+                result = [...preTabs.tabs];
+              }
+              result = [...result, ...loadedTabs];
+              chrome.storage.local.set({ tabs: result }, () => {
+                console.log('There are ' + result.length + ' tabs now.');
+                location.reload();
+              });
+            });
+          })
+          .catch(error => console.log(error));
+      }
+    });
   },
   methods: {
     loadTabs() {
@@ -66,7 +96,6 @@ export default {
       });
     },
     deleteTab(id) {
-      console.error('delete ' + id);
       this.allTabs = this.allTabs.filter(tab => tab.id !== id);
       chrome.storage.local.set({ tabs: this.allTabs }, () => {
         console.log('There are ' + this.allTabs.length + ' tabs now.');
@@ -100,7 +129,9 @@ export default {
       const blob = new Blob([JSON.stringify(this.allTabs)], { type: 'application/json;charset=utf-8' });
       saveAs(blob, 'oneTab-export.json');
     },
-    importJson() {},
+    importJson() {
+      document.getElementById('noteforce-invisible-file-input').click();
+    },
   },
 };
 </script>
