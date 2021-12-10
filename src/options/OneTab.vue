@@ -7,7 +7,9 @@
     <div class="py-1 text-center">
       <div>
         <button type="button" class="btn btn-link clean-all" @click="cleanAll">Clean All</button> |
-        <button type="button" class="btn btn-link open-all" @click="openAll">Open All</button>
+        <button type="button" class="btn btn-link open-all" @click="openAll">Open All</button> |
+        <button type="button" class="btn btn-link open-all" @click="importJson">Import</button> |
+        <button type="button" class="btn btn-link open-all" @click="exportJson">Export</button>
       </div>
     </div>
 
@@ -43,6 +45,7 @@
 import { getUrlHost } from '../utils/urls';
 import { formatDate } from '../utils/base';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'OneTab',
@@ -93,6 +96,11 @@ export default {
       this.allTabs.forEach(tab => chrome.tabs.create({ url: tab.url, active: false }));
       this.cleanAllSilently();
     },
+    exportJson() {
+      const blob = new Blob([JSON.stringify(this.allTabs)], { type: 'application/json;charset=utf-8' });
+      saveAs(blob, 'oneTab-export.json');
+    },
+    importJson() {},
   },
 };
 </script>

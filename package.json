@@ -33,6 +33,7 @@
     "datatables.net-bs4": "^1.10.21",
     "datatables.net-buttons": "^1.6.2",
     "dayjs": "^1.8.27",
+    "file-saver": "^2.0.5",
     "highlight.js": "^10.0.3",
     "jquery": "^3.5.1",
     "jwt-decode": "^3.1.2",
