@@ -77,7 +77,17 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         askLogin(tab);
       });
   } else if (info.menuItemId === types.OPEN_ONE_TAB_MENU_ID) {
-    window.open(chrome.runtime.getURL('/options/onetab.html'));
+    chrome.tabs.create(
+      {
+        url: chrome.runtime.getURL('/options/onetab.html'),
+        pinned: true,
+        index: 0,
+        active: true,
+      },
+      () => {
+        console.log('Pined tab is created');
+      }
+    );
   } else if (info.menuItemId === types.SAVE_TABS_MENU_ID) {
     chrome.tabs.query({ currentWindow: true }, tabs => {
       const allTabs = [];
