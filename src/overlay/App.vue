@@ -17,6 +17,11 @@
     <SideBar @hide:sidebar="closeSideBar" />
     <InlineEditorMenu v-if="quip.showInlineEditor" />
     <Search v-if="showSearch" />
+
+    <div class="form-group width-range-input" id="doc-width-container" v-if="quip.showInlineEditor && quip.zenMode">
+      <label for="doc-width-input">Change Doc Width:</label>
+      <input type="range" class="form-control-range" id="doc-width-input" v-model="quipDocWidth" />
+    </div>
   </div>
 </template>
 
@@ -40,6 +45,7 @@ export default {
         zenMode: false,
         docMaxWidth: '',
       },
+      quipDocWidth: 100,
       showSideBar: false,
       notes: [],
       showCustomNoteWindow: false,
@@ -51,6 +57,11 @@ export default {
         popover: {},
       },
     };
+  },
+  watch: {
+    quipDocWidth: function(val, oldVal) {
+      $('.parts-screen-children-wrapper').css('width', val + '%');
+    },
   },
   created() {
     this.quip.showInlineEditor = window.location.hostname.endsWith('quip.com') && !!document.querySelector('article');
@@ -104,11 +115,13 @@ export default {
         quipDoc.addClass('noteforce-fullscreen');
         this.quip.docMaxWidth = docContainer.css('max-width');
         docContainer.css('max-width', '');
+        docContainer.css('width', this.quipDocWidth + '%');
       } else {
         sidebar.removeClass('noteforce-zen-mode');
         navbar.removeClass('noteforce-zen-mode');
         quipDoc.removeClass('noteforce-fullscreen');
         docContainer.css('max-width', this.quip.docMaxWidth);
+        docContainer.css('width', '');
       }
     },
     changeHighlightColor(color) {
@@ -157,6 +170,16 @@ $zIndex: 9999;
 
     .card-body {
       padding: 0 10px;
+    }
+  }
+
+  #doc-width-container {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
     }
   }
 }
