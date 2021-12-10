@@ -23,6 +23,7 @@ const config = {
   entry: {
     background: './background.js',
     'options/options': './options/options.js',
+    'options/onetab': './options/onetab.js',
     'overlay/overlay': './overlay/overlay.js',
   },
   output: {
@@ -86,6 +87,7 @@ const config = {
     new CopyPlugin([
       { from: 'icons', to: 'icons' },
       { from: 'options/options.html', to: 'options/options.html', transform: transformHtml },
+      { from: 'options/onetab.html', to: 'options/onetab.html', transform: transformHtml },
       {
         from: 'manifest.json',
         to: 'manifest.json',

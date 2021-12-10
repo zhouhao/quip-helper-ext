@@ -4,6 +4,7 @@ import { login, signup, emailVerify, fetchAllMyNotes } from './utils/httpUtils';
 import { getSanitizedUrl } from './utils/urls';
 import { removeScriptTags } from './utils/base';
 import { defaultColor } from './utils/color';
+import { nanoid } from 'nanoid';
 
 global.browser = require('webextension-polyfill');
 
@@ -31,16 +32,38 @@ const getNotes = (tab, actionType, iconClick = false) => {
 };
 
 chrome.runtime.onInstalled.addListener(() => {
+  const parentId = 'noteforce-parent';
+  chrome.contextMenus.create({ title: 'NoteForce', id: parentId, contexts: ['all'] });
+
   chrome.contextMenus.create({
     title: 'Annotate in Noteforce',
     id: types.NOTEFORCE_RIGHT_CLICK_MENU_ID,
+    parentId: parentId,
     contexts: ['selection'],
+  });
+
+  chrome.contextMenus.create({
+    title: 'Open Notes Dashboard',
+    id: types.OPEN_NOTES_MENU_ID,
+    parentId: parentId,
+    contexts: ['all'],
+  });
+  chrome.contextMenus.create({
+    title: 'Open One Tab Dashboard',
+    id: types.OPEN_ONE_TAB_MENU_ID,
+    parentId: parentId,
+    contexts: ['all'],
+  });
+  chrome.contextMenus.create({
+    title: 'Save All Tabs in Current Window',
+    id: types.SAVE_TABS_MENU_ID,
+    parentId: parentId,
+    contexts: ['all'],
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === types.NOTEFORCE_RIGHT_CLICK_MENU_ID) {
-    console.log('right click triggered');
     httpUtils
       .isLoggedIn()
       .then(res => {
@@ -53,6 +76,34 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         // Ask for login first.
         askLogin(tab);
       });
+  } else if (info.menuItemId === types.OPEN_ONE_TAB_MENU_ID) {
+    window.open(chrome.runtime.getURL('/options/onetab.html'));
+  } else if (info.menuItemId === types.SAVE_TABS_MENU_ID) {
+    chrome.tabs.query({ currentWindow: true }, tabs => {
+      const allTabs = [];
+      tabs.forEach(tab => {
+        allTabs.push({
+          id: nanoid(),
+          url: tab.url,
+          title: tab.title,
+          ts: new Date().getTime(),
+        });
+      });
+
+      chrome.storage.local.get(['tabs'], function(preTabs) {
+        let result = [];
+        if (preTabs && preTabs.tabs && preTabs.tabs.length > 0) {
+          result = [...preTabs.tabs];
+        }
+        result = [...result, ...allTabs];
+        chrome.storage.local.set({ tabs: result }, function() {
+          console.log('There are ' + result.length + ' tabs now.');
+        });
+      });
+      tabs.forEach(tab => chrome.tabs.remove(tab.id));
+    });
+  } else if (info.menuItemId === types.OPEN_NOTES_MENU_ID) {
+    chrome.runtime.openOptionsPage();
   }
 });
 
@@ -195,12 +246,6 @@ chrome.commands.onCommand.addListener(command => {
         console.log(response);
       });
     });
-
-    // chrome.tabs.query({ currentWindow: true }, tabs => {
-    //   tabs.forEach(tab => {
-    //     console.log('tab = ' + tab.url + ' > ' + tab.title);
-    //   });
-    // });
   } else if (command === types.CMD_GLOBAL_SEARCH) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       chrome.tabs.sendMessage(tabs[0].id, { action: types.CMD_GLOBAL_SEARCH }, response => {

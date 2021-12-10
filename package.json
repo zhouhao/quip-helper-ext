@@ -1,6 +1,6 @@
 {
   "name": "noteforce",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "An extension that makes your life easier in Salesforce",
   "author": "noteforce <hzhou@quip.com>",
   "engines": {
@@ -38,6 +38,7 @@
     "jwt-decode": "^3.1.2",
     "mark.js": "^8.11.1",
     "markdown-it": "^10.0.0",
+    "nanoid": "^3.1.30",
     "popper.js": "^1.16.1",
     "toastr": "^2.1.4",
     "validator": "^13.5.2",
