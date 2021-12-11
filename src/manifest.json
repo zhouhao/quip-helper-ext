@@ -32,6 +32,20 @@
       },
       "description": "Toggle highlight for current page"
     },
+    "QUIP_ZEN_MODE": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z",
+        "mac": "Command+Shift+Z"
+      },
+      "description": "Enter Quip.com Zen Mode"
+    },
+    "GLOBAL_SEARCH": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Global Search"
+    },
     "OPEN_OPTIONS_PAGE": {
       "suggested_key": {
         "default": "Ctrl+Shift+O",
@@ -40,5 +54,5 @@
       "description": "Open Options Page"
     }
   },
-  "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png"]
+  "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png", "icons/dog.png"]
 }

@@ -27,6 +27,7 @@ import $ from 'jquery';
 import * as types from '../../utils/action-types';
 import { submitPageAnnotation } from '../../utils/page-annotation';
 import SelectedTextBlockquote from './SelectedTextBlockquote';
+import { EventBus } from '../../utils/event-bus';
 
 export default {
   name: 'AnnotationCard',
@@ -48,6 +49,11 @@ export default {
       },
       mouseEvent: {},
     };
+  },
+  created() {
+    EventBus.$on(types.EVENT_ANNOTATE_ICON_CLICKED, selectedText => {
+      this.movePopupNearSelection(selectedText);
+    });
   },
   mounted() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -132,8 +138,8 @@ export default {
       document.onmouseup = null;
       document.onmousemove = null;
     },
-    movePopupNearSelection() {
-      this.selectText = window.getSelection().toString();
+    movePopupNearSelection(selectedText) {
+      this.selectText = selectedText || window.getSelection().toString();
       if (this.selectText) {
         this.left = this.mouseEvent.pageX;
         // TODO: Cannot read its width via `document.getElementById('crx-comment-card').offsetWidth`

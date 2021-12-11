@@ -15,6 +15,13 @@
     </template>
     <!-- Side Bar Component-->
     <SideBar @hide:sidebar="closeSideBar" />
+    <InlineEditorMenu v-if="quip.showInlineEditor" />
+    <Search v-if="showSearch" />
+
+    <div class="form-group width-range-input" id="doc-width-container" v-if="quip.showInlineEditor && quip.zenMode">
+      <label for="doc-width-input">Change Doc Width:</label>
+      <input type="range" class="form-control-range" id="doc-width-input" v-model="quipDocWidth" />
+    </div>
   </div>
 </template>
 
@@ -24,15 +31,25 @@ import { highlightAll, unmark } from '../utils/highlight-mark';
 import { mdRender } from '../utils/md';
 import AnnotationCard from './components/AnnotationCard';
 import SideBar from './components/SideBar';
+import InlineEditorMenu from './components/InlineEditorMenu';
+import $ from 'jquery';
+import Search from './components/Search';
 
 export default {
   name: 'App',
-  components: { SideBar, AnnotationCard },
+  components: { Search, InlineEditorMenu, SideBar, AnnotationCard },
   data() {
     return {
+      quip: {
+        showInlineEditor: false,
+        zenMode: false,
+        docMaxWidth: '',
+      },
+      quipDocWidth: 100,
       showSideBar: false,
       notes: [],
       showCustomNoteWindow: false,
+      showSearch: false,
       errorMsg: '',
       highlight: {
         doneForPageLoad: false,
@@ -40,6 +57,15 @@ export default {
         popover: {},
       },
     };
+  },
+  watch: {
+    quipDocWidth: function(val, oldVal) {
+      $('.parts-screen-children-wrapper').css('width', val + '%');
+    },
+  },
+  created() {
+    this.quip.showInlineEditor = window.location.hostname.endsWith('quip.com') && !!document.querySelector('article');
+    this.quip.docMaxWidth = $('.parts-screen-children-wrapper').css('max-width');
   },
   mounted() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -63,11 +89,41 @@ export default {
         }
         this.highlight.cmdToggle = !this.highlight.cmdToggle;
       }
+      if (request.action === types.CMD_QUIP_ZEN_MODE) {
+        if (!this.quip.showInlineEditor) {
+          return;
+        }
+        this.toggleZenMode(this.quip.zenMode);
+      }
+      if (request.action === types.CMD_GLOBAL_SEARCH) {
+        this.showSearch = !this.showSearch;
+      }
       sendResponse({ done: true });
       return true;
     });
   },
   methods: {
+    toggleZenMode(zenModeStatus) {
+      this.quip.zenMode = !zenModeStatus;
+      const sidebar = $('div.navigation-controller-sidebar');
+      const navbar = $('div.navigation-controller-header.has-toolbar');
+      const quipDoc = $('div.editor.document');
+      const docContainer = $('.parts-screen-children-wrapper');
+      if (this.quip.zenMode) {
+        sidebar.addClass('noteforce-zen-mode');
+        navbar.addClass('noteforce-zen-mode');
+        quipDoc.addClass('noteforce-fullscreen');
+        this.quip.docMaxWidth = docContainer.css('max-width');
+        docContainer.css('max-width', '');
+        docContainer.css('width', this.quipDocWidth + '%');
+      } else {
+        sidebar.removeClass('noteforce-zen-mode');
+        navbar.removeClass('noteforce-zen-mode');
+        quipDoc.removeClass('noteforce-fullscreen');
+        docContainer.css('max-width', this.quip.docMaxWidth);
+        docContainer.css('width', '');
+      }
+    },
     changeHighlightColor(color) {
       this.highlight.color = color;
       console.log('highlight.color = ', this.highlight.color);
@@ -116,5 +172,29 @@ $zIndex: 9999;
       padding: 0 10px;
     }
   }
+
+  #doc-width-container {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.noteforce-zen-mode {
+  position: fixed !important;
+  left: -1000px !important;
+  top: -1000px !important;
+}
+.noteforce-fullscreen {
+  position: fixed !important;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999;
 }
 </style>
