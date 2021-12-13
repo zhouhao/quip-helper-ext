@@ -1,6 +1,6 @@
 {
   "name": "noteforce",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "An extension that makes your life easier in Salesforce",
   "author": "noteforce <hzhou@quip.com>",
   "engines": {
