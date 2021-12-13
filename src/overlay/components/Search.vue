@@ -4,7 +4,7 @@
       <div class="jumbotron">
         <div class="form-group has-search">
           <fa-icon icon="search" class="form-control-feedback" />
-          <input type="text" class="form-control" placeholder="Search" v-model="keyword" @change="search" />
+          <input type="text" class="form-control" placeholder="Search" v-model="keyword" @change="search" ref="searchInput" />
         </div>
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
@@ -52,6 +52,9 @@ export default {
   },
   created() {
     toastr.options.progressBar = true;
+  },
+  mounted() {
+    this.$refs.searchInput.focus();
   },
   methods: {
     search() {
