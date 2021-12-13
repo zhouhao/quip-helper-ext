@@ -1,6 +1,6 @@
 {
   "name": "Noteforce",
-  "description": "An extension that helps you make annotations for any web page",
+  "description": "An extension that makes your life easier in Salesforce",
   "version": "0.1.0",
   "manifest_version": 2,
   "icons": {
