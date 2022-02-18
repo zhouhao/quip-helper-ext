@@ -7,23 +7,11 @@ const { VueLoaderPlugin } = require('vue-loader');
 const TerserPlugin = require('terser-webpack-plugin');
 const { version } = require('./package.json');
 
-let proEnv;
-try {
-  proEnv = require('./env.json');
-} catch (error) {
-  console.error('========================================================================================');
-  console.error('Cannot find env.json, please make a copy of "env.example.json", and name it "env.json"');
-  console.error('========================================================================================');
-  throw new Error('Cannot find env.json, please make a copy of "env.example.json", and name it "env.json"');
-}
-
 const config = {
   mode: process.env.NODE_ENV,
   context: `${__dirname}/src`,
   entry: {
     background: './background.js',
-    'options/options': './options/options.js',
-    'options/onetab': './options/onetab.js',
     'overlay/overlay': './overlay/overlay.js',
   },
   output: {
@@ -86,8 +74,6 @@ const config = {
     }),
     new CopyPlugin([
       { from: 'icons', to: 'icons' },
-      { from: 'options/options.html', to: 'options/options.html', transform: transformHtml },
-      { from: 'options/onetab.html', to: 'options/onetab.html', transform: transformHtml },
       {
         from: 'manifest.json',
         to: 'manifest.json',
@@ -98,10 +84,10 @@ const config = {
           if (config.mode === 'development') {
             jsonContent.content_security_policy = "script-src 'self' 'unsafe-eval'; object-src 'self'";
           } else if (config.mode === 'production') {
-            jsonContent.content_security_policy = "script-src 'self' https://*.saltynote.com; object-src 'self'";
+            jsonContent.content_security_policy = "object-src 'self'";
           }
-          if (process.env.RELEASE !== 'true' && proEnv.manifest_key) {
-            jsonContent.key = proEnv.manifest_key;
+          if (process.env.RELEASE !== 'true') {
+            jsonContent.key = '';
           }
           return JSON.stringify(jsonContent, null, 2);
         },

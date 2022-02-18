@@ -1,11 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBookmark, faTrashAlt, faEdit, faCloudUploadAlt, faUndo, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faBookmark, faTrashAlt, faEdit, faCloudUploadAlt, faUndo, faSearch);
-Vue.component('fa-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 // inject a custom div into current page

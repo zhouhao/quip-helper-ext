@@ -1,22 +1,6 @@
 <template>
-  <div class="noteforce">
-    <!-- Annotation Popup Component-->
-    <AnnotationCard />
-    <!-- highlight popup-->
-    <template v-for="(note, noteId) in highlight.popover">
-      <div :style="{ top: note.top + 'px', left: note.left + 'px' }" class="shadow bg-light rounded card crx-highlight-card" :key="noteId">
-        <div class="card-body">
-          <button type="button" class="close" aria-label="Close" @click="deleteHighlightPopover(noteId)">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <div class="card-text" v-html="note.comment" />
-        </div>
-      </div>
-    </template>
-    <!-- Side Bar Component-->
-    <SideBar @hide:sidebar="closeSideBar" />
+  <div class="quip-helper">
     <InlineEditorMenu v-if="quip.showInlineEditor" />
-    <Search v-if="showSearch" />
 
     <div class="form-group width-range-input" id="doc-width-container" v-if="quip.showInlineEditor && quip.zenMode">
       <label for="doc-width-input">Change Doc Width:</label>
@@ -27,17 +11,12 @@
 
 <script>
 import * as types from '../utils/action-types';
-import { highlightAll, unmark } from '../utils/highlight-mark';
-import { mdRender } from '../utils/md';
-import AnnotationCard from './components/AnnotationCard';
-import SideBar from './components/SideBar';
 import InlineEditorMenu from './components/InlineEditorMenu';
 import $ from 'jquery';
-import Search from './components/Search';
 
 export default {
   name: 'App',
-  components: { Search, InlineEditorMenu, SideBar, AnnotationCard },
+  components: { InlineEditorMenu },
   data() {
     return {
       quip: {
@@ -46,16 +25,6 @@ export default {
         docMaxWidth: '',
       },
       quipDocWidth: 100,
-      showSideBar: false,
-      notes: [],
-      showCustomNoteWindow: false,
-      showSearch: false,
-      errorMsg: '',
-      highlight: {
-        doneForPageLoad: false,
-        cmdToggle: false,
-        popover: {},
-      },
     };
   },
   watch: {
@@ -64,39 +33,16 @@ export default {
     },
   },
   created() {
-    this.quip.showInlineEditor = window.location.hostname.endsWith('quip.com') && !!document.querySelector('article');
+    this.quip.showInlineEditor = !!document.querySelector('article');
     this.quip.docMaxWidth = $('.parts-screen-children-wrapper').css('max-width');
   },
   mounted() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action === types.HIGHLIGHT_ALL) {
-        // do not trigger highlight all after adding new note
-        // only trigger it when page refresh
-        if (this.highlight.doneForPageLoad) return;
-        console.log(types.HIGHLIGHT_ALL);
-        this.notes = request.data;
-        this.notes.forEach(note => (note.clickCallback = this.highlightClick));
-        highlightAll(this.notes);
-        this.highlight.doneForPageLoad = true;
-        this.highlight.cmdToggle = true;
-      }
-      if (request.action === types.CMD_HIGHLIGHT_TOGGLE) {
-        if (this.highlight.cmdToggle) {
-          unmark();
-          this.highlight.popover = [];
-        } else {
-          highlightAll(this.notes);
-        }
-        this.highlight.cmdToggle = !this.highlight.cmdToggle;
-      }
       if (request.action === types.CMD_QUIP_ZEN_MODE) {
         if (!this.quip.showInlineEditor) {
           return;
         }
         this.toggleZenMode(this.quip.zenMode);
-      }
-      if (request.action === types.CMD_GLOBAL_SEARCH) {
-        this.showSearch = !this.showSearch;
       }
       sendResponse({ done: true });
       return true;
@@ -110,39 +56,19 @@ export default {
       const quipDoc = $('div.editor.document');
       const docContainer = $('.parts-screen-children-wrapper');
       if (this.quip.zenMode) {
-        sidebar.addClass('noteforce-zen-mode');
-        navbar.addClass('noteforce-zen-mode');
-        quipDoc.addClass('noteforce-fullscreen');
+        sidebar.addClass('quip-helper-zen-mode');
+        navbar.addClass('quip-helper-zen-mode');
+        quipDoc.addClass('quip-helper-fullscreen');
         this.quip.docMaxWidth = docContainer.css('max-width');
         docContainer.css('max-width', '');
         docContainer.css('width', this.quipDocWidth + '%');
       } else {
-        sidebar.removeClass('noteforce-zen-mode');
-        navbar.removeClass('noteforce-zen-mode');
-        quipDoc.removeClass('noteforce-fullscreen');
+        sidebar.removeClass('quip-helper-zen-mode');
+        navbar.removeClass('quip-helper-zen-mode');
+        quipDoc.removeClass('quip-helper-fullscreen');
         docContainer.css('max-width', this.quip.docMaxWidth);
         docContainer.css('width', '');
       }
-    },
-    changeHighlightColor(color) {
-      this.highlight.color = color;
-      console.log('highlight.color = ', this.highlight.color);
-    },
-    deleteHighlightPopover(noteId) {
-      this.$delete(this.highlight.popover, noteId);
-    },
-    highlightClick(note, event) {
-      console.log('highlightClick...');
-      this.$set(this.highlight.popover, note.id, {
-        left: event.pageX,
-        top: event.pageY,
-        id: note.id,
-        comment: mdRender(note.note),
-      });
-    },
-    closeSideBar() {
-      unmark();
-      this.highlight.cmdToggle = false;
     },
   },
 };
@@ -150,7 +76,7 @@ export default {
 
 <style lang="scss">
 $zIndex: 9999;
-.noteforce {
+.quip-helper {
   position: absolute;
   top: 0;
   left: 0;
@@ -158,20 +84,6 @@ $zIndex: 9999;
   height: 0;
 
   z-index: $zIndex;
-
-  .error-msg {
-    color: red;
-  }
-
-  div.crx-highlight-card.card {
-    position: absolute;
-    z-index: $zIndex - 10;
-    min-width: 250px !important;
-
-    .card-body {
-      padding: 0 10px;
-    }
-  }
 
   #doc-width-container {
     position: fixed;
@@ -184,12 +96,12 @@ $zIndex: 9999;
   }
 }
 
-.noteforce-zen-mode {
+.quip-helper-zen-mode {
   position: fixed !important;
   left: -1000px !important;
   top: -1000px !important;
 }
-.noteforce-fullscreen {
+.quip-helper-fullscreen {
   position: fixed !important;
   width: 100%;
   height: 100%;

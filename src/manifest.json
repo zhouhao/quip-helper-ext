@@ -1,7 +1,7 @@
 {
-  "name": "Noteforce",
-  "description": "An extension that makes your life easier in Salesforce",
-  "version": "0.1.0",
+  "name": "Quip Helper",
+  "description": "An extension that improves your Quip experience",
+  "version": "0.0.1",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon.png",
@@ -9,49 +9,27 @@
     "144": "icons/icon.png"
   },
   "browser_action": {
-    "default_title": "Noteforce"
+    "default_title": "Quip Helper"
   },
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
-  "options_page": "options/options.html",
-  "permissions": ["activeTab", "contextMenus", "tabs", "storage"],
+  "permissions": ["activeTab", "contextMenus"],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["https://*.quip.com/*"],
       "js": ["overlay/overlay.js"],
       "css": ["bs4.css", "overlay/overlay.css"]
     }
   ],
   "commands": {
-    "HIGHLIGHT_TOGGLE": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+X",
-        "mac": "Command+Shift+X"
-      },
-      "description": "Toggle highlight for current page"
-    },
     "QUIP_ZEN_MODE": {
       "suggested_key": {
         "default": "Ctrl+Shift+Z",
         "mac": "Command+Shift+Z"
       },
       "description": "Enter Quip.com Zen Mode"
-    },
-    "GLOBAL_SEARCH": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+L",
-        "mac": "Command+Shift+L"
-      },
-      "description": "Global Search"
-    },
-    "OPEN_OPTIONS_PAGE": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+O",
-        "mac": "Command+Shift+O"
-      },
-      "description": "Open Options Page"
     }
   },
   "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png", "icons/dog.png"]
