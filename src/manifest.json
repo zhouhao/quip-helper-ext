@@ -2,20 +2,15 @@
   "name": "Quip Helper",
   "description": "An extension that improves your Quip experience",
   "version": "0.0.1",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "icons": {
     "48": "icons/icon.png",
     "128": "icons/icon.png",
     "144": "icons/icon.png"
   },
-  "browser_action": {
-    "default_title": "Quip Helper"
-  },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "contextMenus"],
   "content_scripts": [
     {
       "matches": ["https://*.quip.com/*"],
@@ -29,8 +24,10 @@
         "default": "Ctrl+Shift+Z",
         "mac": "Command+Shift+Z"
       },
-      "description": "Enter Quip.com Zen Mode"
+      "description": "Enter Zen Mode"
     }
   },
-  "web_accessible_resources": ["icons/dog.jpg", "icons/icon.png", "icons/dog.png"]
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }

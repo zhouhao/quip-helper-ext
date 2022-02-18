@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const ejs = require('ejs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ExtensionReloader = require('webpack-extension-reloader');
@@ -81,23 +80,15 @@ const config = {
           const jsonContent = JSON.parse(content);
           jsonContent.version = version;
 
-          if (config.mode === 'development') {
-            jsonContent.content_security_policy = "script-src 'self' 'unsafe-eval'; object-src 'self'";
-          } else if (config.mode === 'production') {
-            jsonContent.content_security_policy = "object-src 'self'";
-          }
           if (process.env.RELEASE !== 'true') {
-            jsonContent.key = '';
+            // jsonContent.key = '';
           }
           return JSON.stringify(jsonContent, null, 2);
         },
       },
     ]),
   ],
-  performance: {
-    maxEntrypointSize: 10240000,
-    maxAssetSize: 10240000,
-  },
+
   // fix js code isn't UTF-8 encoded.
   optimization: {
     // Uncomment below line to no minimize our code.
@@ -128,12 +119,6 @@ if (process.env.HMR === 'true') {
       manifest: `${__dirname}/src/manifest.json`,
     }),
   ]);
-}
-
-function transformHtml(content) {
-  return ejs.render(content.toString(), {
-    ...process.env,
-  });
 }
 
 module.exports = config;
