@@ -81,7 +81,8 @@ const config = {
           jsonContent.version = version;
 
           if (process.env.RELEASE !== 'true') {
-            // jsonContent.key = '';
+            jsonContent.key =
+              'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAts4JNv72yMw3WZ1OrU3Q4XZ2xiypjCC2ugzT/Ij+dLJbfBitT8r0/tpRJPQ20vvMc7bEWRa8HHuuO4ndWpWAqMZT2Dr/QkhYbPkRVMqdg0dQmuq5iEVpaaJxx9LNzngtSwJuehv7f2AWbbC66Xtemz/rNF+sUtq8erOjmwsBWwT9ry0vo+vrzg0wIUGWvqo7EjExbHe5BcfmsnHjpnHzRPzYBxE408AryooTG0xqBpaafyXaOduYKJ8BtQXwCuoKUANRakeMUEksD5hKS/HB/+/uqHAH6C6MNICroBn4wGVPc1bJ9MYVitZgnWlbpVV3ECvYYY4HO2eCOgVrzp/cIwIDAQAB';
           }
           return JSON.stringify(jsonContent, null, 2);
         },
