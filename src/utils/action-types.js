@@ -1,1 +1,3 @@
 export const CMD_QUIP_ZEN_MODE = 'QUIP_ZEN_MODE';
+
+export const MENU_QUIP_ZEN_MODE = 'MENU_QUIP_ZEN_MODE';
