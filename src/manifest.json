@@ -8,10 +8,6 @@
     "128": "icons/icon.png",
     "144": "icons/icon.png"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": ["contextMenus"],
   "content_scripts": [
     {
       "matches": ["https://*.quip.com/*"],
@@ -19,15 +15,6 @@
       "css": ["bs4.css", "overlay/overlay.css"]
     }
   ],
-  "commands": {
-    "QUIP_ZEN_MODE": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Z",
-        "mac": "Command+Shift+Z"
-      },
-      "description": "Enter Zen Mode"
-    }
-  },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }
