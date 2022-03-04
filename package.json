@@ -1,6 +1,6 @@
 {
   "name": "quip-helper",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "An extension that improves your Quip experience",
   "author": "SaltyEgg <royhzhou@gmail.com>",
   "engines": {
